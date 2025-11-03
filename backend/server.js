@@ -10,16 +10,24 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 
 const app = express();
-app.use(cors());
+
+// ✅ dynamic CORS origin based on environment
+const allowedOrigins = [
+  'http://localhost:5173',          // vite dev
+  'http://localhost:3000',          // react-scripts dev
+  'https://employee-attendance-management-336l.onrender.com', // render frontend
+];
+app.use(cors({ origin: allowedOrigins, credentials: true }));
+
 app.use(express.json());
 
-// API routes
-app.use('/api/auth', authRoutes);        // login
-app.use('/api/admin', adminRoutes);      // admin-only actions
-app.use('/api/batches', batchRoutes);    // list/create (protected)
-app.use('/api/employees', employeeRoutes);// list/create (protected)
+// routes
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/batches', batchRoutes);
+app.use('/api/employees', employeeRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/batchowners', batchOwnerRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, ()=> console.log(`Server started on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
