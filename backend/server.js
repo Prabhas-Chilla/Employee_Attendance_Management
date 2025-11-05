@@ -11,7 +11,6 @@ const attendanceRoutes = require('./routes/attendanceRoutes');
 
 const app = express();
 
-// ✅ dynamic CORS origin based on environment
 const allowedOrigins = [
   'http://localhost:5173',          // vite dev
   'http://localhost:3000',          // react-scripts dev
@@ -28,6 +27,9 @@ app.use('/api/batches', batchRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/batchowners', batchOwnerRoutes);
+app.get('/api/health', (req, res) => {
+  res.json({ message: 'Backend server is running successfully ✅' });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
